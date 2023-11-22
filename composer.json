@@ -1,0 +1,43 @@
+{
+    "name": "moltaqa/wasl",
+    "description": "Package to assest our team handling the wasl integration",
+    "type": "library",
+    "keywords": [
+        "laravel",
+        "package",
+        "moltaqa",
+        "wasl"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ibrahim Sami",
+            "email": "himasami0000@gmail.com"
+        },
+        {
+            "name": "Fahmi Moustafa",
+            "email": "fahmymostafa.f@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Moltaqa\\Wasl\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Moltaqa\\Wasl\\WaslServiceProvider"
+            ]
+        }
+    },
+    "require": {
+        "php": "^8.0",
+        "guzzlehttp/guzzle": "^7.2@dev"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
