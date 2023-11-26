@@ -12,7 +12,7 @@ use Illuminate\Http\JsonResponse;
 class Wasl
 {
     private static Client $client;
-    protected static Wasl $instance;
+    protected static $instance;
 
     public function __construct()
     {
