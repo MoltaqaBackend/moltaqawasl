@@ -34,10 +34,33 @@ Use `Wasl::getInstance()` to create and initialize a WASL instance.
 echo Wasl::getInstance()->getVehiclePlateLetters();
 
 # Register a driver and his vehicle
-echo Wasl::getInstance()->registerDriverAndVehicle(array $driverData,array $vehicleData);
+echo Wasl::getInstance()->registerDriverAndVehicle(
+         driverData: [
+             "driver" => [
+                 "identityNumber" => "1234567890",
+                 "dateOfBirthHijri" => "1411/01/01",
+                 "dateOfBirthGregorian" => "1990-01-01",
+                 "emailAddress" => "address@email.com",
+                 "mobileNumber" => "+966512345678",
+             ]
+         ],
+         vehicleData: [
+             "vehicle" => [
+                 "sequenceNumber" => "123456879",
+                 "plateLetterRight" => "ا",
+                 "plateLetterMiddle" => "ا",
+                 "plateLetterLeft" => "ا",
+                 "plateNumber" => "1234",
+                 "plateType" => "1"
+             ]
+         ]
+     );
 
-# check if a driver identity is registered at WASL
-echo Wasl::getInstance()->driverCheckEligibility(mixed $identityNumbers);
+# check if a driver registration is still valid at WASL
+echo Wasl::getInstance()->driverCheckEligibility(identityNumbers: '1234567890');
+
+# check if list of drivers registrations is still valid at WASL
+echo Wasl::getInstance()->driverCheckEligibility(identityNumbers: ['1234567890','1234567891']);
 ```
 
 ## Credits

@@ -163,10 +163,10 @@ class Wasl
             $response = $e->getResponse();
             $statusCode = $response->getStatusCode();
             $reasonPhrase = $response->getReasonPhrase();
-            $body = $response->getBody();
-            return response()->json(['error' => "Request failed with status code $statusCode: $reasonPhrase", 'body' => $body], $statusCode);
+            $body = json_decode($response->getBody()->getContents(),true);
+            return response()->json(['error' => "Request failed with status code $statusCode: $reasonPhrase",'status' => $statusCode, 'body' => $body], $statusCode);
         } else {
-            return response()->json(['error' => 'Request failed without a response.' . $e->getMessage()], 500);
+            return response()->json(['error' => 'Request failed without a response.' . $e->getMessage(),'status' => 500 , 'body' => ''], 500);
         }
     }
 }
