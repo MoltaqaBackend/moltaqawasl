@@ -37,7 +37,7 @@ echo Wasl::getInstance()->getVehiclePlateLetters();
 echo Wasl::getInstance()->registerDriverAndVehicle(array $driverData,array $vehicleData);
 
 # check if a driver identity is registered at WASL
-echo Wasl::getInstance()->waslCheckEligibility(mixed $identityNumbers);
+echo Wasl::getInstance()->driverCheckEligibility(mixed $identityNumbers);
 ```
 
 ## Credits

@@ -4,15 +4,15 @@ namespace Moltaqa\Wasl;
 
 use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Http\JsonResponse;
 
 class Wasl
 {
     private static Client $client;
-
-    private static Wasl $instance;
+    protected static Wasl $instance;
 
     public function __construct()
     {
@@ -43,7 +43,14 @@ class Wasl
         return static::$instance;
     }
 
-    public static function registerDriverAndVehicle($driverData = [], $vehicleData = [])
+    /**
+     * @param array $driverData driver personal data
+     * @param array $vehicleData driver vehicle data
+     * @return JsonResponse
+     * @throws WaslMissingDataException
+     * @throws GuzzleException
+     */
+    public static function registerDriverAndVehicle(array $driverData = [], array $vehicleData = []): JsonResponse
     {
         try {
             $data = [];
@@ -87,7 +94,12 @@ class Wasl
         }
     }
 
-    public static function waslCheckEligibility(mixed $identityNumbers)
+    /**
+     * @param mixed $identityNumbers maybe 1 id for single drive ror array of ids as values
+     * @return JsonResponse
+     * @throws GuzzleException
+     */
+    public static function driverCheckEligibility(mixed $identityNumbers): JsonResponse
     {
         try {
             $asPost = false;
