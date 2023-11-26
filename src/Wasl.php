@@ -4,6 +4,7 @@ namespace Moltaqa\Wasl;
 
 use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 
@@ -11,7 +12,7 @@ class Wasl
 {
     private static Client $client;
 
-    protected static $instance;
+    private static Wasl $instance;
 
     public function __construct()
     {
@@ -39,7 +40,6 @@ class Wasl
         if (static::$instance === null) {
             static::$instance = new static();
         }
-
         return static::$instance;
     }
 
@@ -74,15 +74,16 @@ class Wasl
                 'json' => $data,
             ]);
 
-            # If Failed
-            if ($response->getStatusCode() != 200) {
-                throw new WaslRegistrationFailedException('Error: Unexpected status code - ', $response->getStatusCode());
+            if ($response->getStatusCode() == 200) {
+                $responseData = json_decode($response->getBody()->getContents(), true);
+                return response()->json($responseData);
             }
-
-            return json_decode($response->getBody()->getContents(), true);
-        } catch (Exception  $e) {
-            Log::critical($e->getMessage());
-            throw new Exception('Failed to register driver and vehicle WASL API');
+            else{
+                $statusCode = $response->getStatusCode();
+                return response()->json(['error' => "Received a non-200 status code: $statusCode"], $statusCode);
+            }
+        } catch (RequestException  $e) {
+            return self::handelException($e);
         }
     }
 
@@ -105,22 +106,16 @@ class Wasl
                 $response = self::$client->get(config('wasl.WASL_CHECK_DRIVER_ELIGIBLIITY_ENDPOINT') . '/' . urlencode($identityNumbers));
             }
 
-            switch ($response->getStatusCode()) {
-                case 400:
-                    throw new WaslRegistrationFailedException('Error: Unexpected status code - ', $response->getStatusCode());
-                    break;
-                case 500:
-                    throw new WaslRegistrationFailedException('Error: Unexpected status code - ', $response->getStatusCode());
-                    break;
-                default:
-                    break;
+            if ($response->getStatusCode() == 200) {
+                $responseData = json_decode($response->getBody()->getContents(), true);
+                return response()->json($responseData);
             }
-
-            return json_decode($response->getBody()->getContents(), true);
-
-        } catch (Exception  $e) {
-            Log::critical($e->getMessage());
-            throw new Exception('Failed to check driver eligibility WASL API');
+            else{
+                $statusCode = $response->getStatusCode();
+                return response()->json(['error' => "Received a non-200 status code: $statusCode"], $statusCode);
+            }
+        } catch (RequestException  $e) {
+            return self::handelException($e);
         }
     }
 
@@ -144,5 +139,22 @@ class Wasl
             'و',
             'ى',
         ];
+    }
+
+    /**
+     * @param RequestException|Exception $e
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public static function handelException(RequestException|Exception $e): \Illuminate\Http\JsonResponse
+    {
+        if ($e->hasResponse()) {
+            $response = $e->getResponse();
+            $statusCode = $response->getStatusCode();
+            $reasonPhrase = $response->getReasonPhrase();
+            $body = $response->getBody();
+            return response()->json(['error' => "Request failed with status code $statusCode: $reasonPhrase", 'body' => $body], $statusCode);
+        } else {
+            return response()->json(['error' => 'Request failed without a response.' . $e->getMessage()], 500);
+        }
     }
 }
