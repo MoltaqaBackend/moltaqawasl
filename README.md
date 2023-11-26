@@ -9,6 +9,37 @@
 
 The official documentation for moltaqa wasl can be found on the [Moltaqa Packages website](https://pakages.moltaqa.net/docs/wasl).
 
+## Installing WASL
+
+The recommended way to install WASL is through
+[Composer](https://getcomposer.org/).
+
+```bash
+composer require moltaqa/wasl
+```
+
+## Publishing Assets
+
+to publish WASL assets
+
+```bash
+php artisan vendor:publish --provider="Moltaqa\Wasl\WaslServiceProvider"
+```
+
+## Basic Usage
+
+Use `Wasl::getInstance()` to create and initialize a WASL instance.
+```php
+# List Supported Vehicle Plate Letters
+echo Wasl::getInstance()->getVehiclePlateLetters();
+
+# Register a driver and his vehicle
+echo Wasl::getInstance()->registerDriverAndVehicle(array $driverData,array $vehicleData);
+
+# check if a driver identity is registered at WASL
+echo Wasl::getInstance()->waslCheckEligibility(mixed $identityNumbers);
+```
+
 ## Credits
 
 - [Moltaqa](https://moltaqa.net)

@@ -88,22 +88,21 @@ class Wasl
 
     public static function waslCheckEligibility(mixed $identityNumbers)
     {
-       try {
+        try {
             $asPost = false;
-            if(is_array($identityNumbers))
+            if (is_array($identityNumbers))
                 $asPost = true;
 
-            if($asPost){
+            if ($asPost) {
                 $driverIds = array_map(function ($id) {
                     return ['id' => $id];
                 }, $identityNumbers);
-    
-                $response = self::$client->post(config('wasl.WASL_CHECK_DRIVER_ELIGIBLIITY_ENDPOINT') ,  [
+
+                $response = self::$client->post(config('wasl.WASL_CHECK_DRIVER_ELIGIBLIITY_ENDPOINT'), [
                     'json' => $driverIds,
                 ]);
-            }
-            else{
-                $response = self::$client->get(config('wasl.WASL_CHECK_DRIVER_ELIGIBLIITY_ENDPOINT').'/'.urlencode($identityNumbers));
+            } else {
+                $response = self::$client->get(config('wasl.WASL_CHECK_DRIVER_ELIGIBLIITY_ENDPOINT') . '/' . urlencode($identityNumbers));
             }
 
             switch ($response->getStatusCode()) {
@@ -119,9 +118,31 @@ class Wasl
 
             return json_decode($response->getBody()->getContents(), true);
 
-       } catch (Exception  $e) {
-           Log::critical($e->getMessage());
-           throw new Exception('Failed to check driver eligibility WASL API');
-       }
+        } catch (Exception  $e) {
+            Log::critical($e->getMessage());
+            throw new Exception('Failed to check driver eligibility WASL API');
+        }
+    }
+
+    public function getVehiclePlateLetters(): array{
+        return [
+            'ا',
+            'ب',
+            'ح',
+            'د',
+            'ر',
+            'س',
+            'ص',
+            'ط',
+            'ع',
+            'ق',
+            'ك',
+            'ل',
+            'م',
+            'ن',
+            'هـ',
+            'و',
+            'ى',
+        ];
     }
 }
