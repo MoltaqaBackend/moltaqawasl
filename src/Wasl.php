@@ -3,6 +3,8 @@
 namespace Moltaqa\Wasl;
 
 use Alkoumi\LaravelHijriDate\Hijri;
+use DateTime;
+use DateTimeZone;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
@@ -10,6 +12,11 @@ use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\JsonResponse;
 
+/**
+ * Based On Integration Guide for Dispatching Companies
+ * Version v2.24
+ * Version date 22/05/2023
+ */
 class Wasl
 {
     private static Client $client;
@@ -74,11 +81,18 @@ class Wasl
             }
             # Format Driver Birthdate
             if (isset($data['driver']['dateOfBirthGregorian'])) {
+                # the docs require all dates and timestamps to be in KSA timezone
+                date_default_timezone_set('Asia/Riyadh');
                 $dateOfBirthGregorian = $data['driver']['dateOfBirthGregorian'];
-                $data['driver']['dateOfBirthGregorian'] = date('Y-m-d', strtotime($dateOfBirthGregorian));
+                $timestamp = strtotime($dateOfBirthGregorian);
+                $dateTime = new DateTime();
+                $dateTime->setTimestamp($timestamp);
+                $dateTime->setTimezone(new DateTimeZone('Asia/Riyadh'));
+                # Gregorian Date
+                $data['driver']['dateOfBirthGregorian'] = $dateTime->format('Y-m-d');
                 # Calc Hijri Date for user if he wants
                 if($calcHijriDate){
-                    $data['driver']['dateOfBirthHijri'] = Hijri::Date('Y/m/d',strtotime($dateOfBirthGregorian));
+                    $data['driver']['dateOfBirthHijri'] = Hijri::Date('Y/m/d',strtotime($dateTime->format('Y-m-d')));
                 }
             }
             # Send Request

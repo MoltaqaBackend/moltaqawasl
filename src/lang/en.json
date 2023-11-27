@@ -1,0 +1,14 @@
+{
+    "DRIVER_VEHICLE_DUPLICATE": "Driver or vehicle already registered",
+    "DRIVER_NOT_ALLOWED": "Foreign nationalities are not allowed per TGA rules",
+    "DRIVER_NOT_FOUND": "Driver information is not correct/ kindly revise input data before re-attempting registration",
+    "VEHICLE_NOT_FOUND": "Vehicle information is not correct/ kindly revise input data before re-attempting registration",
+    "VEHICLE_NOT_OWNED_BY_FINANCIER": "Vehicle ownership is not associated/linked to the driver nor an approved by SAMA financer (check BR05 in driver and vehicle registration service business rules section)",
+    "DRIVER_NOT_AUTHORIZED_TO_DRIVE_VEHICLE": "Driver does not own the vehicle and there is no legal association between the driver and the vehicle “Not the co-owner/actual driver of the vehicle in MOI/Absher systems” (check BR05 in driver and vehicle registration service business rules section)",
+    "NO_VALID_OPERATION_CARD": "No valid operating card found (check BR05 in driver and vehicle registration service business rules section)",
+    "CONTACT_WASL_SUPPORT": "System internal error/missing data, kindly contact Wasl Support (check support section in page 3)",
+    "DRIVER_IS_NOT_REGISTERED_IN_VDS": "Driver is not registered in VDS portal, rejection (direct the driver to register in https://vds.naql.sa/ ).",
+    "SUCCESS": "success",
+    "BAD_REQUEST": "bad_request",
+    "": ""
+}

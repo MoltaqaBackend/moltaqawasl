@@ -1,0 +1,23 @@
+<?php
+
+namespace Moltaqa\Wasl;
+
+/**
+ * Based On Integration Guide for Dispatching Companies
+ * Version v2.24
+ * Version date 22/05/2023
+ */
+class ResultCodes
+{
+    const DRIVER_VEHICLE_DUPLICATE = "DRIVER_VEHICLE_DUPLICATE";
+    const DRIVER_NOT_ALLOWED = "DRIVER_NOT_ALLOWED";
+    const DRIVER_NOT_FOUND = "DRIVER_NOT_FOUND";
+    const VEHICLE_NOT_FOUND = "VEHICLE_NOT_FOUND";
+    const VEHICLE_NOT_OWNED_BY_FINANCIER = "VEHICLE_NOT_OWNED_BY_FINANCIER";
+    const DRIVER_NOT_AUTHORIZED_TO_DRIVE_VEHICLE = "DRIVER_NOT_AUTHORIZED_TO_DRIVE_VEHICLE";
+    const NO_VALID_OPERATION_CARD = "NO_VALID_OPERATION_CARD";
+    const CONTACT_WASL_SUPPORT = "CONTACT_WASL_SUPPORT";
+    const DRIVER_IS_NOT_REGISTERED_IN_VDS = "DRIVER_IS_NOT_REGISTERED_IN_VDS";
+    const SUCCESS = "success";
+    const BAD_REQUEST = "bad_request";
+}
