@@ -2,6 +2,7 @@
 
 namespace Moltaqa\Wasl;
 
+use Alkoumi\LaravelHijriDate\Hijri;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
@@ -46,11 +47,12 @@ class Wasl
     /**
      * @param array $driverData driver personal data
      * @param array $vehicleData driver vehicle data
+     * @param boolean $calcHijriDate
      * @return JsonResponse
      * @throws WaslMissingDataException
      * @throws GuzzleException
      */
-    public static function registerDriverAndVehicle(array $driverData = [], array $vehicleData = []): JsonResponse
+    public static function registerDriverAndVehicle(array $driverData = [], array $vehicleData = [],$calcHijriDate = false): JsonResponse
     {
         try {
             $data = [];
@@ -66,17 +68,20 @@ class Wasl
             if (empty($vehicleData) && !empty($driverData)) {
                 $data = $driverData;
             }
-
+            # Merge Driver and Vehicle Data if both exists
             if ($driverData && $vehicleData) {
                 $data = array_merge($driverData, $vehicleData);
             }
-
             # Format Driver Birthdate
             if (isset($data['driver']['dateOfBirthGregorian'])) {
                 $dateOfBirthGregorian = $data['driver']['dateOfBirthGregorian'];
                 $data['driver']['dateOfBirthGregorian'] = date('Y-m-d', strtotime($dateOfBirthGregorian));
+                # Calc Hijri Date for user if he wants
+                if($calcHijriDate){
+                    $data['driver']['dateOfBirthHijri'] = Hijri::Date('Y/m/d',strtotime($dateOfBirthGregorian));
+                }
             }
-
+            # Send Request
             $response = self::$client->post(config('wasl.WASL_REGISTER_DRIVER_AND_VEHICLE_ENDPOINT'), [
                 'json' => $data,
             ]);

@@ -34,6 +34,7 @@ Use `Wasl::getInstance()` to create and initialize a WASL instance.
 echo Wasl::getInstance()->getVehiclePlateLetters();
 
 # Register a driver and his vehicle
+# has an option to calculate the value of "dateOfBirthHijri" 
 echo Wasl::getInstance()->registerDriverAndVehicle(
          driverData: [
              "driver" => [
@@ -53,7 +54,8 @@ echo Wasl::getInstance()->registerDriverAndVehicle(
                  "plateNumber" => "1234",
                  "plateType" => "1"
              ]
-         ]
+         ],
+         calcHijriDate: false
      );
 
 # check if a driver registration is still valid at WASL

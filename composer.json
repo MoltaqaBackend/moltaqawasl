@@ -33,7 +33,8 @@
     },
     "require": {
         "php": "^8.0",
-        "guzzlehttp/guzzle": "^7.2@dev"
+        "guzzlehttp/guzzle": "^7.2@dev",
+        "alkoumi/laravel-hijri-date": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.6"
