@@ -63,21 +63,23 @@ class Wasl
     {
         try {
             $data = [];
-
             if (empty($driverData) && empty($vehicleData)) {
                 throw new WaslMissingDataException('please provide driver or vehicle data');
             }
-
             if (empty($driverData) && !empty($vehicleData)) {
                 $data = $vehicleData;
             }
-
             if (empty($vehicleData) && !empty($driverData)) {
                 $data = $driverData;
             }
             # Merge Driver and Vehicle Data if both exists
             if ($driverData && $vehicleData) {
                 $data = array_merge($driverData, $vehicleData);
+            }
+            # check car sequenceNumber as per docs it should be 10 digits formatted as string
+            # if not 10 the left pad the digits till reach the 10 digits
+            if(isset($data['vehicle']['sequenceNumber'])){
+                $data['vehicle']['sequenceNumber'] = str_pad($data['vehicle']['sequenceNumber'], 10, '0', STR_PAD_LEFT);
             }
             # Format Driver Birthdate
             if (isset($data['driver']['dateOfBirthGregorian'])) {
