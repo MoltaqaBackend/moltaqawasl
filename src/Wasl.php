@@ -76,11 +76,6 @@ class Wasl
             if ($driverData && $vehicleData) {
                 $data = array_merge($driverData, $vehicleData);
             }
-            # check car sequenceNumber as per docs it should be 10 digits formatted as string
-            # if not 10 the left pad the digits till reach the 10 digits
-            if(isset($data['vehicle']['sequenceNumber'])){
-                $data['vehicle']['sequenceNumber'] = str_pad($data['vehicle']['sequenceNumber'], 10, '0', STR_PAD_LEFT);
-            }
             # Format Driver Birthdate
             if (isset($data['driver']['dateOfBirthGregorian'])) {
                 # the docs require all dates and timestamps to be in KSA timezone
@@ -104,11 +99,11 @@ class Wasl
 
             if ($response->getStatusCode() == 200) {
                 $responseData = json_decode($response->getBody()->getContents(), true);
-                return response()->json($responseData);
+                return response()->json(['success' => "Request passed with status code 200: ",'status' => 200, 'body' => $responseData], 200);
             }
             else{
                 $statusCode = $response->getStatusCode();
-                return response()->json(['error' => "Received a non-200 status code: $statusCode"], $statusCode);
+                return response()->json(['error' => "Received a non-200 status code: $statusCode",'status' => $statusCode, 'body' => NULL], $statusCode);
             }
         } catch (RequestException  $e) {
             return self::handelException($e);
@@ -141,11 +136,11 @@ class Wasl
 
             if ($response->getStatusCode() == 200) {
                 $responseData = json_decode($response->getBody()->getContents(), true);
-                return response()->json($responseData);
+                return response()->json(['success' => "Request passed with status code 200: ",'status' => 200, 'body' => $responseData], 200);
             }
             else{
                 $statusCode = $response->getStatusCode();
-                return response()->json(['error' => "Received a non-200 status code: $statusCode"], $statusCode);
+                return response()->json(['error' => "Received a non-200 status code: $statusCode",'status' => $statusCode, 'body' => NULL], $statusCode);
             }
         } catch (RequestException  $e) {
             return self::handelException($e);
