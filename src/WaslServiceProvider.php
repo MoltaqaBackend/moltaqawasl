@@ -8,7 +8,7 @@ class WaslServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        $this->loadTranslationsFrom(__DIR__.'/lang', 'moltaqa-wasl');
+        $this->loadTranslationsFrom(__DIR__.'/lang/vendor/wasl', 'moltaqa-wasl');
 
         $this->publishes([
             __DIR__ . '/config/wasl.php' => config_path('wasl.php'),
